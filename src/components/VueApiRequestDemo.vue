@@ -699,12 +699,12 @@
                         This is usually the most used. For this case, it has to be a <code>Function</code>
                         that returns a <code>Promise</code>.
                       </p>
-                      <pre v-html="js(code['apiReference'][0][0])"></pre>
-                      <pre v-html="html(code['apiReference'][0][1])"></pre>
+                      <pre v-html="js(code['apiReference']['props']['resource'][0])"></pre>
+                      <pre v-html="html(code['apiReference']['props']['resource'][1])"></pre>
                       <p>
                         For this example, the response will be:
                       </p>
-                      <pre v-html="html(code['apiReference'][0][2])"></pre>
+                      <pre v-html="html(code['apiReference']['props']['resource'][2])"></pre>
                     </li>
                   </ul>
                   <h5>Multiple Request</h5>
@@ -716,12 +716,12 @@
                         that returns a <code>Promise</code>.
                         See <a @click="scrollTo('#exp_9')">Parallel Requests</a> section for details.
                       </p>
-                      <pre v-html="js(code['apiReference'][0][3])"></pre>
-                      <pre v-html="html(code['apiReference'][0][4])"></pre>
+                      <pre v-html="js(code['apiReference']['props']['resource'][3])"></pre>
+                      <pre v-html="html(code['apiReference']['props']['resource'][4])"></pre>
                       <p>
                         For this example, the response will be:
                       </p>
-                      <pre v-html="js(code['apiReference'][0][5])"></pre>
+                      <pre v-html="js(code['apiReference']['props']['resource'][5])"></pre>
                     </li>
                   </ul>
                 </td>
@@ -742,8 +742,8 @@
                       <p>
                         See example below:
                       </p>
-                      <pre v-html="js(code['apiReference'][1][0])"></pre>
-                      <pre v-html="html(code['apiReference'][1][1])"></pre>
+                      <pre v-html="js(code['apiReference']['props']['params'][0])"></pre>
+                      <pre v-html="html(code['apiReference']['props']['params'][1])"></pre>
                     </li>
                   </ul>
 
@@ -753,8 +753,8 @@
                       <p>
                         See example below:
                       </p>
-                      <pre v-html="js(code['apiReference'][1][2])"></pre>
-                      <pre v-html="html(code['apiReference'][1][3])"></pre>
+                      <pre v-html="js(code['apiReference']['props']['params'][2])"></pre>
+                      <pre v-html="html(code['apiReference']['props']['params'][3])"></pre>
                     </li>
                   </ul>
                 </td>
@@ -812,7 +812,7 @@
                 <td>
                   <p>
                     The effect to be shown when the content is loaded.
-                    These effects is provided by
+                    These effects are provided by
                     <a href="https://daneden.github.io/animate.css/" target="_blank">Animate.css</a>.
                   </p>
                   <p>
@@ -845,7 +845,7 @@
                   <p>
                     Path of response data. Imagine this <strong>response</strong>:
                   </p>
-                  <pre v-html="js(code['apiReference'][1][4])"></pre>
+                  <pre v-html="js(code['apiReference']['props']['resp'][0])"></pre>
                   <p>
                     if <code>resp="foo"</code>, the response is actually <code>response.foo</code>.
                     <br/>
@@ -1035,7 +1035,7 @@
                     Otherwise, it is disabled.
                   </p>
 
-                  <pre v-html="html(code['apiReference'][2][0])"></pre>
+                  <pre v-html="html(code['apiReference']['slots']['default'][0])"></pre>
 
                 </td>
               </tr>
@@ -1051,18 +1051,18 @@
                     </strong>
                     if the <code>waiting slot</code>
                     slot is set, the component keeps its waiting state until you fetch it.
-                    Otherwise, the component automatically fetch it.
+                    Otherwise, the component automatically fetches it.
                   </p>
                   <p>
                     <strong>
                       Note:
                     </strong>
                     if there is no <code>success slot</code>, <code>error slot</code> or <code>loaded slot</code>, the state of the component will return to <code>waiting</code>
-                    after it fetch and loaded.
+                    after it fetches and loaded.
                   </p>
 
-                  <pre v-html="html(code['apiReference'][2][1])"></pre>
-                  <pre v-html="html(code['apiReference'][2][2])"></pre>
+                  <pre v-html="html(code['apiReference']['slots']['waiting'][0])"></pre>
+                  <pre v-html="html(code['apiReference']['slots']['waiting'][1])"></pre>
 
                 </td>
               </tr>
@@ -1132,10 +1132,10 @@
                     </li>
                   </ul>
                   <h5>Example</h5>
-                  <pre v-html="html(code['apiReference'][3][0])"></pre>
+                  <pre v-html="html(code['apiReference']['methods']['fetch'][0])"></pre>
                   <h5>Example using key param</h5>
-                  <pre v-html="html(code['apiReference'][3][1])"></pre>
-                  <pre v-html="html(code['apiReference'][3][2])"></pre>
+                  <pre v-html="html(code['apiReference']['methods']['fetch'][1])"></pre>
+                  <pre v-html="html(code['apiReference']['methods']['fetch'][2])"></pre>
                 </td>
               </tr>
               </tbody>
@@ -1327,7 +1327,7 @@
 <script>
   import Prism from 'prismjs'
   import 'prismjs/themes/prism.css'
-  import codes from '../codes/VueApiRequestDemo'
+  import codes from '../codes/VueApiRequestDemo/index'
   import example from '../examples/VueApiRequestDemo'
 
   import { TweenLite } from 'gsap'
