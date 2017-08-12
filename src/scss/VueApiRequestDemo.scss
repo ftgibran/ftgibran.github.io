@@ -47,6 +47,7 @@ a {
     .row {
       width: 100%;
       display: flex;
+      flex-wrap: wrap;
       min-height: inherit;
     }
 

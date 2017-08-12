@@ -4,12 +4,17 @@ import Vue from 'vue'
 import App from './App'
 import AppRouter from './service/AppRouter'
 import AppResource from './service/AppResource'
+import { TweenLite, Power2 } from 'gsap'
 
 import VueHead from 'vue-head'
 import VueApiRequest from 'vue-api-request'
 
 Vue.use(VueHead)
 VueApiRequest.setAPI(AppResource)
+VueApiRequest.addEffect('blur', el => {
+  el.style.filter = 'blur(20px)'
+  TweenLite.to(el, 1, {filter: 'blur(0)', ease: Power2.easeOut})
+})
 Vue.use(VueApiRequest)
 
 Vue.config.productionTip = false

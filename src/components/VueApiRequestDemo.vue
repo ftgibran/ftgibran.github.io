@@ -86,8 +86,7 @@
                 <li><a @click="scrollTo('#exp_7')">Using Events</a></li>
                 <li><a @click="scrollTo('#exp_8')">Serial Requests</a></li>
                 <li><a @click="scrollTo('#exp_9')">Parallel Requests</a></li>
-                <li><a @click="scrollTo('#exp_10')">Error View Slot</a></li>
-                <li><a @click="scrollTo('#exp_11')">Customize</a></li>
+                <li><a @click="scrollTo('#exp_10')">Customize</a></li>
               </ol>
             </li>
             <hr/>
@@ -191,7 +190,7 @@
 
                 <div class="panel-heading">
                   <div class="pull-right">
-                    <a @click="resetExamples()" class="btn btn-primary">Reload Example</a>
+                    <a @click="reset('firstExample')" class="btn btn-primary">Reload Example</a>
                   </div>
                   <h4>Result</h4>
                 </div>
@@ -201,7 +200,7 @@
                   <api-request
                     :resource="$api.giphyRandom"
                     v-model="example.firstExample.response"
-                    v-if="showExamples"
+                    v-if="example.firstExample.show"
                   >
                     <img v-if="example.firstExample.response.body"
                          :src="example.firstExample.response.body.data.image_url"
@@ -271,7 +270,7 @@
 
                 <div class="panel-heading">
                   <div class="pull-right">
-                    <a @click="resetExamples()" class="btn btn-primary">Reload Example</a>
+                    <a @click="reset('fakeExample')" class="btn btn-primary">Reload Example</a>
                   </div>
                   <h4>Result</h4>
                 </div>
@@ -281,7 +280,7 @@
                   <api-request
                     :resource="$api.fakeRequest(3000, 'My fake Request')"
                     v-model="example.fakeExample.response"
-                    v-if="showExamples"
+                    v-if="example.fakeExample.show"
                   >
                     Hello, I am a fake request and my response is: <code>{{example.fakeExample.response}}</code>
                   </api-request>
@@ -378,7 +377,6 @@
                         :resource="$api.fakeRequest(1000, !example.likeExample.liked)"
                         v-model="example.likeExample.liked"
                         :trigger.sync="example.likeExample.trigger"
-                        v-if="showExamples"
                         :spinner-scale="0.55"
                         :spinner-padding="0"
                       >
@@ -412,7 +410,7 @@
 
             <div class="panel-heading">
               <div class="pull-right">
-                <a @click="resetExamples()" class="btn btn-primary">Reload Example</a>
+                <a @click="reset('triggerExample')" class="btn btn-primary">Reload Example</a>
               </div>
               <h4>Result</h4>
             </div>
@@ -426,15 +424,17 @@
                   v-model="example.triggerExample.response"
                   :trigger.sync="example.triggerExample.trigger"
                   :sync="example.triggerExample.offset"
-                  v-if="showExamples"
+                  v-if="example.triggerExample.show"
                   :style="{minHeight: '250px'}"
                   class="div-section"
                 >
                   <form slot="waiting" @submit.prevent="example.triggerExample.trigger=true">
-                    <div class="form-group">
-                      <input type="text" placeholder="Type something" v-model="example.triggerExample.q"/>
+                    <div class="form-group col-xs-12 col-md-4 col-md-offset-4">
+                      <input class="form-control"
+                             placeholder="Type something"
+                             v-model="example.triggerExample.q"/>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group col-xs-12">
                       <button class="btn btn-default">Search</button>
                     </div>
                   </form>
@@ -487,7 +487,7 @@
 
           <div class="row">
             <div class="col-md-8">
-              <pre v-html="html(code['docs'][5][0])"></pre>
+              <pre v-html="js(code['docs'][5][0])"></pre>
               <pre v-html="html(code['docs'][5][1])"></pre>
             </div>
 
@@ -542,7 +542,7 @@
 
           <div class="row">
             <div class="col-md-8">
-              <pre v-html="html(code['docs'][6][0])"></pre>
+              <pre v-html="js(code['docs'][6][0])"></pre>
               <pre v-html="html(code['docs'][6][1])"></pre>
             </div>
 
@@ -552,20 +552,16 @@
 
                 <div class="panel-heading">
                   <div class="pull-right">
-                    <a @click="example.eventsExample.show=true"
+                    <a @click="reset('eventsExample')"
                        v-if="!example.eventsExample.show"
                        class="btn btn-primary">Reveal Example</a>
-
-                    <a @click="resetExamples"
-                       v-if="example.eventsExample.show"
-                       class="btn btn-primary">Reload Example</a>
                   </div>
                   <h4>Result</h4>
                 </div>
 
                 <div class="panel-body text-center">
 
-                  <div v-if="example.eventsExample.show && showExamples">
+                  <div v-if="example.eventsExample.show">
                     <api-request
                       :resource="$api.fakeRequest(1000)"
                       :trigger.sync="example.eventsExample.triggerWaiting"
@@ -641,22 +637,363 @@
 
         <fieldset id="exp_8">
           <h3>8. Serial Requests</h3>
-          #TODO
+
+          <div class="row">
+            <div class="col-md-8">
+              <pre v-html="js(code['docs'][7][0])"></pre>
+              <pre v-html="html(code['docs'][7][1])"></pre>
+            </div>
+
+            <div class="col-md-4">
+              <div class="panel panel-default panel-result">
+
+                <div class="panel-heading">
+                  <div class="pull-right">
+                    <a @click="reset('serialExample')" class="btn btn-primary">Reload Example</a>
+                  </div>
+                  <h4>Result</h4>
+                </div>
+
+                <div class="panel-body text-center">
+
+                  <api-request
+                    :resource="$api.fakeRequest(1000)"
+                    v-model="example.serialExample.response1"
+                    :trigger.sync="example.serialExample.trigger"
+                    v-if="example.serialExample.show"
+                  >
+                    <form slot="waiting" @submit.prevent="example.serialExample.trigger=true">
+                      <h4>Enter three URL sites</h4>
+
+                      <div class="form-group">
+                        <input class="form-control"
+                               placeholder="Enter an URL site"
+                               v-model="example.serialExample.q1"/>
+                      </div>
+                      <div class="form-group">
+                        <input class="form-control"
+                               placeholder="Enter an URL site"
+                               v-model="example.serialExample.q2"/>
+                      </div>
+                      <div class="form-group">
+                        <input class="form-control"
+                               placeholder="Enter an URL site"
+                               v-model="example.serialExample.q3"/>
+                      </div>
+
+                      <div class="form-group">
+                        <button class="btn btn-default">Generate Print Screen</button>
+                      </div>
+                    </form>
+
+                    <div slot="success">
+                      <img src="/static/v-api@512.png"
+                           class="img-responsive"
+                           alt="print"/>
+
+                      <api-request
+                        :resource="$api.fakeRequest(1000)"
+                        v-model="example.serialExample.response2"
+                      >
+                        <img src="/static/v-api@512.png"
+                             class="img-responsive"
+                             alt="print"/>
+
+                        <api-request
+                          :resource="$api.fakeRequest(1000)"
+                          v-model="example.serialExample.response3"
+                        >
+                          <img src="/static/v-api@512.png"
+                               class="img-responsive"
+                               alt="print"/>
+                        </api-request>
+
+                      </api-request>
+                    </div>
+
+                  </api-request>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
         </fieldset>
 
         <fieldset id="exp_9">
           <h3>9. Parallel Requests</h3>
-          #TODO
+
+          <pre v-html="js(code['docs'][8][0])"></pre>
+          <pre v-html="html(code['docs'][8][1])"></pre>
+
+          <div class="panel panel-default panel-result">
+
+            <div class="panel-heading">
+              <div class="pull-right">
+                <a @click="reset('parallelExample')" class="btn btn-primary">Reload Example</a>
+              </div>
+              <h4>Result</h4>
+            </div>
+
+            <div class="panel-body text-center">
+
+              <api-request
+                :resource="example.parallelExample.resource($api)"
+                v-model="example.parallelExample.response"
+                :trigger.sync="example.parallelExample.trigger"
+                v-if="example.parallelExample.show"
+              >
+                <form slot="waiting" @submit.prevent="example.parallelExample.trigger=true">
+                  <h4>Enter three URL sites</h4>
+
+                  <div class="form-group col-xs-12 col-md-4">
+                    <input class="form-control"
+                           placeholder="Enter an URL site"
+                           v-model="example.parallelExample.q1"/>
+                  </div>
+                  <div class="form-group col-xs-12 col-md-4">
+                    <input class="form-control"
+                           placeholder="Enter an URL site"
+                           v-model="example.parallelExample.q2"/>
+                  </div>
+                  <div class="form-group col-xs-12 col-md-4">
+                    <input class="form-control"
+                           placeholder="Enter an URL site"
+                           v-model="example.parallelExample.q3"/>
+                  </div>
+
+                  <div class="form-group">
+                    <button class="btn btn-default">Generate Print Screen</button>
+                  </div>
+                </form>
+
+                <div slot="success" class="row">
+                  <div class="col-md-4">
+                    <img src="/static/v-api@512.png"
+                         class="img-responsive"
+                         alt="print"/>
+                  </div>
+                  <div class="col-md-4">
+                    <img src="/static/v-api@512.png"
+                         class="img-responsive"
+                         alt="print"/>
+                  </div>
+                  <div class="col-md-4">
+                    <img src="/static/v-api@512.png"
+                         class="img-responsive"
+                         alt="print"/>
+                  </div>
+                </div>
+              </api-request>
+
+            </div>
+          </div>
+
         </fieldset>
 
         <fieldset id="exp_10">
-          <h3>10. Error View Slot</h3>
-          #TODO
-        </fieldset>
+          <h3>10. Customize</h3>
 
-        <fieldset id="exp_11">
-          <h3>11. Customize</h3>
-          #TODO
+          <div class="panel panel-default panel-result">
+
+            <div class="panel-heading">
+              <h4>Free customize</h4>
+            </div>
+
+            <div class="panel-body text-center">
+
+              <div class="row free-customize">
+                <div class="col-xs-12 col-md-4 text-left">
+                  <div class="form-group">
+                    <label for="customize-effect">Effect</label>
+                    <select v-model="example.customizeExample.effect" id="customize-effect" class="form-control">
+                      <option value="fadeIn">fadeIn</option>
+                      <option value="fadeInDown">fadeInDown</option>
+                      <option value="fadeInUp">fadeInUp</option>
+                      <option value="zoomIn">zoomIn</option>
+                      <option value="zoomInDown">zoomInDown</option>
+                      <option value="zoomInUp">zoomInUp</option>
+                      <option value="bounceIn">bounceIn</option>
+                      <option value="flipInX">flipInX</option>
+                      <option value="flipInY">flipInY</option>
+                      <option value="lightSpeedIn">lightSpeedIn</option>
+                      <option value="rotateInDownLeft">rotateInDownLeft</option>
+                      <option value="rotateInDownRight">rotateInDownRight</option>
+                      <option value="rotateInUpLeft">rotateInUpLeft</option>
+                      <option value="rotateInUpRight">rotateInUpRight</option>
+                      <option value="jackInTheBox">jackInTheBox</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="customize-spinner">Spinner</label>
+                    <select v-model="example.customizeExample.spinner" id="customize-spinner" class="form-control">
+                      <option value="PulseLoader">PulseLoader</option>
+                      <option value="GridLoader">GridLoader</option>
+                      <option value="ClipLoader">ClipLoader</option>
+                      <option value="RiseLoader">RiseLoader</option>
+                      <option value="BeatLoader">BeatLoader</option>
+                      <option value="SyncLoader">SyncLoader</option>
+                      <option value="RotateLoader">RotateLoader</option>
+                      <option value="FadeLoader">FadeLoader</option>
+                      <option value="PacmanLoader">PacmanLoader</option>
+                      <option value="SquareLoader">SquareLoader</option>
+                      <option value="ScaleLoader">ScaleLoader</option>
+                      <option value="SkewLoader">SkewLoader</option>
+                      <option value="MoonLoader">MoonLoader</option>
+                      <option value="RingLoader">RingLoader</option>
+                      <option value="BounceLoader">BounceLoader</option>
+                      <option value="DotLoader">DotLoader</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="customize-spinner-color">Spinner Color</label>
+                    <input v-model="example.customizeExample.spinnerColor"
+                           id="customize-spinner-color" class="form-control"/>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="customize-spinner-padding">Spinner Padding</label>
+                    <input v-model="example.customizeExample.spinnerPadding"
+                           id="customize-spinner-padding" class="form-control"/>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="customize-spinner-scale">Spinner Scale</label>
+                    <input v-model="example.customizeExample.spinnerScale"
+                           type="number" min="0" max="5"
+                           id="customize-spinner-scale" class="form-control"/>
+                  </div>
+
+                  <div class="form-group text-center">
+                    <a @click="reset('customizeExample', true)" class="btn btn-primary btn-lg">Make</a>
+                  </div>
+                </div>
+
+                <div class="col-xs-12 col-md-4">
+                  <api-request
+                    :resource="$api.fakeRequest(2500)"
+                    :style="{
+                      maxWidth: '100%',
+                      marginBottom: '1em',
+                      border: '1px solid #ccc',
+                      position: 'relative',
+                      zIndex: '1'
+                    }"
+                    :effect="example.customizeExample.effect"
+                    :spinner="example.customizeExample.spinner"
+                    :spinner-color="example.customizeExample.spinnerColor"
+                    :spinner-padding="example.customizeExample.spinnerPadding"
+                    :spinner-scale="example.customizeExample.spinnerScale"
+                    v-if="example.customizeExample.show"
+                  >
+                    <img src="../assets/v-api@512.png" alt="Vue Api Request"/>
+                  </api-request>
+                </div>
+
+                <div class="col-xs-12 col-md-4 text-left">
+                  <pre v-html="html(code['freeCustomize']({
+                  effect: example.customizeExample.effect,
+                  spinner: example.customizeExample.spinner,
+                  spinnerColor: example.customizeExample.spinnerColor,
+                  spinnerPadding: example.customizeExample.spinnerPadding,
+                  spinnerScale: example.customizeExample.spinnerScale
+                  }))"></pre>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <h4>Creating your own effect</h4>
+
+          <p>
+            Using <code>addEffect</code> method, it is possible to create a new effect.
+            <a href="//greensock.com">GreenSock</a> provides a good way to customize your effect animation,
+            and it will be used in the next example:
+          </p>
+
+          <div class="row">
+            <div class="col-md-8">
+              <pre v-html="js(code['docs'][9][0])"></pre>
+              <pre v-html="html(code['docs'][9][1])"></pre>
+            </div>
+
+            <div class="col-md-4">
+
+              <div class="panel panel-default panel-result">
+
+                <div class="panel-heading">
+                  <div class="pull-right">
+                    <a @click="reset('customEffectExample')" class="btn btn-primary">Show Effect</a>
+                  </div>
+                  <h4>Example</h4>
+                </div>
+
+                <div class="panel-body text-center">
+
+                  <api-request
+                    :resource="$api.fakeRequest(500)"
+                    effect="blur"
+                    v-if="example.customEffectExample.show"
+                  >
+                    <img src="../assets/v-api@512.png"
+                         :style="{maxHeight: '200px', width: 'auto'}"
+                         alt="Vue Api Request"/>
+                  </api-request>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <h4>Custom Spinner</h4>
+
+          <p>
+            Using <code>Loading Slot</code>, you can create use your own loader.
+            The next example uses <a href="//fontawesome.io">Font Awesome</a> as a custom spinner.
+          </p>
+
+          <div class="row">
+            <div class="col-md-8">
+              <pre v-html="html(code['docs'][9][2])"></pre>
+            </div>
+
+            <div class="col-md-4">
+
+              <div class="panel panel-default panel-result">
+
+                <div class="panel-heading">
+                  <div class="pull-right">
+                    <a @click="reset('customSpinnerExample')" class="btn btn-primary">Show Spinner</a>
+                  </div>
+                  <h4>Example</h4>
+                </div>
+
+                <div class="panel-body text-center">
+
+                  <api-request
+                    :resource="$api.fakeRequest(2500)"
+                    v-if="example.customSpinnerExample.show"
+                  >
+                    <div slot="loading">
+                      <i class="fa fa-refresh fa-spin"></i>
+                      Loading
+                    </div>
+                    <img src="../assets/v-api@512.png"
+                         :style="{maxHeight: '200px', width: 'auto'}"
+                         alt="Vue Api Request"/>
+                  </api-request>
+
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
         </fieldset>
 
       </div>
@@ -1320,6 +1657,16 @@
   </main>
 </template>
 
+<style lang="scss">
+  #exp_10 {
+    .free-customize {
+      .spinner {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+      }
+    }
+  }
+</style>
 <style lang="scss" scoped>
   @import "../scss/VueApiRequestDemo";
 </style>
@@ -1327,11 +1674,14 @@
 <script>
   import Prism from 'prismjs'
   import 'prismjs/themes/prism.css'
-  import codes from '../codes/VueApiRequestDemo/index'
+  import code from '../codes/VueApiRequestDemo/code'
   import example from '../examples/VueApiRequestDemo'
 
   import { TweenLite } from 'gsap'
   import 'gsap/ScrollToPlugin'
+
+  // Clone Example
+  const defaultSet = JSON.parse(JSON.stringify(example))
 
   export default {
     head: {
@@ -1341,16 +1691,7 @@
     },
 
     data () {
-      return {
-        example,
-        showExamples: true
-      }
-    },
-
-    computed: {
-      code () {
-        return codes
-      }
+      return { code, example }
     },
 
     methods: {
@@ -1363,13 +1704,16 @@
       scrollTo (query) {
         TweenLite.to(window, 1, {scrollTo: query})
       },
-      resetExamples () {
-        this.showExamples = false
+      reset (name, soft = false) {
+        if (!soft) {
+          Object.keys(this.example[name]).forEach(item => {
+            let value = defaultSet[name][item]
+            if (value !== undefined) this.example[name][item] = value
+          })
+        }
 
-        this.example.triggerExample.response = {}
-        this.example.triggerExample.offset = 0
-
-        this.$nextTick(() => { this.showExamples = true })
+        this.example[name].show = false
+        this.$nextTick(() => { this.example[name].show = true })
       }
     }
   }

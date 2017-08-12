@@ -2,13 +2,12 @@ import basicUsage from './BasicUsage'
 import preConfiguration from './PreConfiguration'
 import docs from './Docs'
 import apiReference from './ApiReference'
+import freeCustomize from './FreeCustomize'
 
-let result = {
+export default {
   basicUsage,
   preConfiguration,
   docs,
-  apiReference
+  apiReference,
+  freeCustomize
 }
-console.log(result)
-
-export default result

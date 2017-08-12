@@ -386,6 +386,156 @@ Vue.use(VueApiRequest)
   }
 </script>
 `
+  ],
+  /** Serial Request ***********************************************/
+  [
+    `$api = {
+}
+`,
+    `<template>
+  <api-request
+    :resource="$api.screenshot"
+    :params="q1"
+    v-model="resp1"
+    :trigger.sync="trigger"
+  >
+    <form slot="waiting" @submit.prevent="trigger=true">
+      <h4>Enter three URL sites</h4>
+
+      <input type="text" placeholder="Enter an URL site" v-model="q1"/>
+      <input type="text" placeholder="Enter an URL site" v-model="q2"/>
+      <input type="text" placeholder="Enter an URL site" v-model="q3"/>
+
+      <button>Generate Print Screen</button>
+    </form>
+
+    <div slot="success">
+      <img src=""/>
+
+      <api-request
+        :resource="$api.screenshot"
+        :params="q2"
+        v-model="resp2"
+      >
+        <img src=""/>
+
+        <api-request
+          :resource="$api.screenshot"
+          :params="q3"
+          v-model="resp3"
+        >
+          <img src=""/>
+        </api-request>
+
+      </api-request>
+    </div>
+
+  </api-request>
+</template>
+
+<script>
+  // Don't forget to set your $api
+  export default {
+    data () {
+      return {
+        trigger: false,
+        q1: 'http://google.com',
+        q2: 'http://facebook.com',
+        q3: 'http://twitter.com',
+        resp1: {},
+        resp2: {},
+        resp3: {}
+      }
+    }
+  }
+</script>
+`
+  ],
+  /** Parallel Request ***********************************************/
+  [
+    `$api = {
+}
+`,
+    `<template>
+  <api-request
+    :resource="resource"
+    :params="{request1: q1, request2: q2, request3: q3}"
+    v-model="resp"
+    :trigger.sync="trigger"
+  >
+    <form slot="waiting" @submit.prevent="trigger=true">
+      <h4>Enter three URL sites</h4>
+
+      <input type="text" placeholder="Enter an URL site" v-model="q1"/>
+      <input type="text" placeholder="Enter an URL site" v-model="q2"/>
+      <input type="text" placeholder="Enter an URL site" v-model="q3"/>
+
+      <button>Generate Print Screen</button>
+    </form>
+
+    <div slot="success">
+      <img src=""/>
+      <img src=""/>
+      <img src=""/>
+    </div>
+  </api-request>
+</template>
+
+<script>
+  // Don't forget to set your $api
+  export default {
+    data () {
+      return {
+        trigger: false,
+        q1: 'http://google.com',
+        q2: 'http://facebook.com',
+        q3: 'http://twitter.com',
+        resp: {}
+      }
+    },
+    computed: {
+      resource () {
+        return {
+          request1: this.$api.screenshot,
+          request2: this.$api.screenshot,
+          request3: this.$api.screenshot
+        }
+      }
+    }
+  }
+</script>
+`
+  ],
+  /** Customize ***********************************************/
+  [
+    `import Vue from 'vue'
+import VueApiRequest from 'vue-api-request'
+import { TweenLite, Power2 } from 'gsap'
+
+VueApiRequest.addEffect('blur', el => {
+  el.style.filter = 'blur(20px)'
+  TweenLite.to(el, 1, {filter: 'blur(0)', ease: Power2.easeOut})
+})
+
+Vue.use(VueApiRequest)
+`,
+    `<api-request
+  :resource="myResource"
+  effect="blur"
+>
+  <!--My stuffs to be shown-->
+</api-request>
+`,
+    `<api-request
+  :resource="myResource"
+>
+  <div slot="loading">
+    <i class="fa fa-refresh fa-spin"></i>
+    Loading
+  </div>
+  <!--My stuffs to be shown-->
+</api-request>
+`
   ]
 ]
 

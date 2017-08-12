@@ -1,9 +1,10 @@
-
 let firstExample = {
+  show: true,
   response: {}
 }
 
 let fakeExample = {
+  show: true,
   response: {}
 }
 
@@ -13,6 +14,7 @@ let likeExample = {
 }
 
 let triggerExample = {
+  show: true,
   trigger: false,
   q: null,
   offset: 0,
@@ -39,6 +41,48 @@ let eventsExample = {
   loaded: (resp) => alert('Loaded (success or error) with response: ' + resp)
 }
 
+let serialExample = {
+  show: true,
+  response1: {},
+  response2: {},
+  response3: {},
+  trigger: false,
+  q1: 'http://google.com',
+  q2: 'http://facebook.com',
+  q3: 'http://twitter.com'
+}
+
+let parallelExample = {
+  show: true,
+  resource: (api) => ({
+    request1: api.fakeRequest(1000),
+    request2: api.fakeRequest(2000),
+    request3: api.fakeRequest(3000)
+  }),
+  response: {},
+  trigger: false,
+  q1: 'http://google.com',
+  q2: 'http://facebook.com',
+  q3: 'http://twitter.com'
+}
+
+let customizeExample = {
+  show: true,
+  effect: 'lightSpeedIn',
+  spinner: 'DotLoader',
+  spinnerColor: '#FC6194',
+  spinnerPadding: '60px',
+  spinnerScale: 1.5
+}
+
+let customEffectExample = {
+  show: true
+}
+
+let customSpinnerExample = {
+  show: true
+}
+
 /** Export ***********************************************/
 export default {
   firstExample,
@@ -46,5 +90,10 @@ export default {
   likeExample,
   triggerExample,
   conditionalExample,
-  eventsExample
+  eventsExample,
+  serialExample,
+  parallelExample,
+  customizeExample,
+  customEffectExample,
+  customSpinnerExample
 }
