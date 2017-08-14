@@ -50,7 +50,17 @@ export default {
       `<api-request>
   <!--Success Slot-->
 </api-request>
-`],
+`,
+      `<api-request>
+  <div slot="waiting">
+    <!--Waiting Slot-->
+  </div>
+  
+  <!--Not Success Slot-->
+  
+</api-request>
+`
+    ],
     waiting: [
       `<api-request>
   <div slot="waiting">

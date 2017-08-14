@@ -101,7 +101,9 @@ export default [
   ],
   /** Global Request Access from $api ***********************************************/
   [
-    `import Vue from 'vue'
+    `/** api.js **/
+
+import Vue from 'vue'
 import VueResource from 'vue-resource'
 import axios from 'axios'
 
@@ -114,7 +116,7 @@ export default {
 `,
     `import Vue from 'vue'
 import VueApiRequest from 'vue-api-request'
-import api from 'api.js'
+import api from './api.js'
 
 VueApiRequest.setAPI(api)
 Vue.use(VueApiRequest)
@@ -390,41 +392,44 @@ Vue.use(VueApiRequest)
   /** Serial Request ***********************************************/
   [
     `$api = {
+  fakeRequest: (params) => new Promise(resolve => {
+    setTimeout(() => resolve(params.response), params.time)
+  })
 }
 `,
     `<template>
   <api-request
-    :resource="$api.screenshot"
-    :params="q1"
-    v-model="resp1"
+    :resource="$api.fakeRequest"
+    :params="{time: 1000, response: 'First Response'}"
+    v-model="response1"
     :trigger.sync="trigger"
+    effect="flipInX"
   >
-    <form slot="waiting" @submit.prevent="trigger=true">
-      <h4>Enter three URL sites</h4>
-
-      <input type="text" placeholder="Enter an URL site" v-model="q1"/>
-      <input type="text" placeholder="Enter an URL site" v-model="q2"/>
-      <input type="text" placeholder="Enter an URL site" v-model="q3"/>
-
-      <button>Generate Print Screen</button>
-    </form>
+    <div slot="waiting">
+      <button @click="trigger=true">Do serial request</button>
+    </div>
 
     <div slot="success">
-      <img src=""/>
+      <img src="//ftgibran.github.io/static/v-api@512.png"/>
+      <p>{{response1}}</p>
 
       <api-request
-        :resource="$api.screenshot"
-        :params="q2"
-        v-model="resp2"
+        :resource="$api.fakeRequest"
+        :params="{time: 1500, response: 'Second Response'}"
+        v-model="response2"
+        effect="flipInY"
       >
-        <img src=""/>
+        <img src="//ftgibran.github.io/static/v-api@512.png"/>
+        <p>{{response2}}</p>
 
         <api-request
-          :resource="$api.screenshot"
-          :params="q3"
-          v-model="resp3"
+          :resource="$api.fakeRequest"
+          :params="{time: 2000, response: 'Third Response'}"
+          v-model="response3"
+          effect="zoomIn"
         >
-          <img src=""/>
+          <img src="//ftgibran.github.io/static/v-api@512.png"/>
+          <p>{{response3}}</p>
         </api-request>
 
       </api-request>
@@ -438,13 +443,10 @@ Vue.use(VueApiRequest)
   export default {
     data () {
       return {
-        trigger: false,
-        q1: 'http://google.com',
-        q2: 'http://facebook.com',
-        q3: 'http://twitter.com',
-        resp1: {},
-        resp2: {},
-        resp3: {}
+        response1: {},
+        response2: {},
+        response3: {},
+        trigger: false
       }
     }
   }
@@ -454,29 +456,42 @@ Vue.use(VueApiRequest)
   /** Parallel Request ***********************************************/
   [
     `$api = {
+  fakeRequest: (params) => new Promise(resolve => {
+    setTimeout(() => resolve(params.response), params.time)
+  })
 }
 `,
     `<template>
   <api-request
     :resource="resource"
-    :params="{request1: q1, request2: q2, request3: q3}"
-    v-model="resp"
+    :params="{
+      request1: {time: 1000, response: 'First Response'}, 
+      request2: {time: 2000, response: 'Second Response'}, 
+      request3: {time: 3000, response: 'Third Response'}, 
+    }"
+    v-model="response"
     :trigger.sync="trigger"
   >
-    <form slot="waiting" @submit.prevent="trigger=true">
-      <h4>Enter three URL sites</h4>
-
-      <input type="text" placeholder="Enter an URL site" v-model="q1"/>
-      <input type="text" placeholder="Enter an URL site" v-model="q2"/>
-      <input type="text" placeholder="Enter an URL site" v-model="q3"/>
-
-      <button>Generate Print Screen</button>
+    <form slot="waiting">
+      <button @click="trigger=true">Do parallel request</button>
     </form>
 
     <div slot="success">
-      <img src=""/>
-      <img src=""/>
-      <img src=""/>
+      <span>
+        <img src="//ftgibran.github.io/static/v-api@512.png"/>
+        <br/>
+        {{response.request1}}
+      </span>
+      <span>
+        <img src="//ftgibran.github.io/static/v-api@512.png"/>
+        <br/>
+        {{response.request2}}
+      </span>
+      <span>
+        <img src="//ftgibran.github.io/static/v-api@512.png"/>
+        <br/>
+        {{response.request3}}
+      </span>
     </div>
   </api-request>
 </template>
@@ -487,18 +502,15 @@ Vue.use(VueApiRequest)
     data () {
       return {
         trigger: false,
-        q1: 'http://google.com',
-        q2: 'http://facebook.com',
-        q3: 'http://twitter.com',
-        resp: {}
+        response: {}
       }
     },
     computed: {
       resource () {
         return {
-          request1: this.$api.screenshot,
-          request2: this.$api.screenshot,
-          request3: this.$api.screenshot
+          request1: this.$api.fakeRequest,
+          request2: this.$api.fakeRequest,
+          request3: this.$api.fakeRequest
         }
       }
     }
@@ -526,13 +538,32 @@ Vue.use(VueApiRequest)
   <!--My stuffs to be shown-->
 </api-request>
 `,
+    `<!--CustomLoader.vue-->
+
+<template>
+  <div :style="{color: this.color}">
+    <i class="fa fa-refresh fa-spin"></i>
+    <strong>LOADING...</strong>
+  </div>
+</template>
+
+<script>
+  export default {
+    props: ['color']
+  }
+</script>
+`,
+    `import Vue from 'vue'
+import VueApiRequest from 'vue-api-request'
+import CustomLoader from './CustomLoader.vue'
+
+VueApiRequest.addLoader('CustomLoader', CustomLoader)
+Vue.use(VueApiRequest)
+`,
     `<api-request
   :resource="myResource"
+  spinner="CustomLoader"
 >
-  <div slot="loading">
-    <i class="fa fa-refresh fa-spin"></i>
-    Loading
-  </div>
   <!--My stuffs to be shown-->
 </api-request>
 `

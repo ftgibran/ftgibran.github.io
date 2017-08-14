@@ -301,7 +301,6 @@
             It is possible to set global all your API Requests. To do this, let us create a new file <code>api.js</code>:
           </p>
 
-          <h4>api.js</h4>
           <pre v-html="js(code['docs'][3][0])"></pre>
 
           <p>
@@ -638,6 +637,16 @@
         <fieldset id="exp_8">
           <h3>8. Serial Requests</h3>
 
+          <p>
+            Sometimes you need more than one request. There are many options to handle with that.
+            One way is to make <code>Serial Requests</code> which is basically stacks of requests.
+            It can be useful if one of request needs the data of the other one.
+          </p>
+
+          <p>
+            The example below loads three queue requests from <code>fakeRequest</code>:
+          </p>
+
           <div class="row">
             <div class="col-md-8">
               <pre v-html="js(code['docs'][7][0])"></pre>
@@ -657,58 +666,46 @@
                 <div class="panel-body text-center">
 
                   <api-request
-                    :resource="$api.fakeRequest(1000)"
+                    :resource="$api.fakeRequest(1000, 'First Response')"
                     v-model="example.serialExample.response1"
                     :trigger.sync="example.serialExample.trigger"
+                    effect="flipInX"
                     v-if="example.serialExample.show"
                   >
-                    <form slot="waiting" @submit.prevent="example.serialExample.trigger=true">
-                      <h4>Enter three URL sites</h4>
-
-                      <div class="form-group">
-                        <input class="form-control"
-                               placeholder="Enter an URL site"
-                               v-model="example.serialExample.q1"/>
-                      </div>
-                      <div class="form-group">
-                        <input class="form-control"
-                               placeholder="Enter an URL site"
-                               v-model="example.serialExample.q2"/>
-                      </div>
-                      <div class="form-group">
-                        <input class="form-control"
-                               placeholder="Enter an URL site"
-                               v-model="example.serialExample.q3"/>
-                      </div>
-
-                      <div class="form-group">
-                        <button class="btn btn-default">Generate Print Screen</button>
-                      </div>
-                    </form>
+                    <div slot="waiting">
+                      <a @click="example.serialExample.trigger=true"
+                         class="btn btn-default">Do serial request</a>
+                    </div>
 
                     <div slot="success">
                       <img src="/static/v-api@512.png"
-                           class="img-responsive"
-                           alt="print"/>
+                           :style="{width: '200px'}"
+                           alt="vue-api-request"/>
+                      <p>{{example.serialExample.response1}}</p>
 
                       <api-request
-                        :resource="$api.fakeRequest(1000)"
+                        :resource="$api.fakeRequest(1500, 'Second Response')"
                         v-model="example.serialExample.response2"
+                        effect="flipInY"
                       >
                         <img src="/static/v-api@512.png"
-                             class="img-responsive"
-                             alt="print"/>
+                             :style="{width: '200px'}"
+                             alt="vue-api-request"/>
+                        <p>{{example.serialExample.response2}}</p>
 
                         <api-request
-                          :resource="$api.fakeRequest(1000)"
+                          :resource="$api.fakeRequest(2000, 'Third Response')"
                           v-model="example.serialExample.response3"
+                          effect="zoomIn"
                         >
                           <img src="/static/v-api@512.png"
-                               class="img-responsive"
-                               alt="print"/>
+                               :style="{width: '200px'}"
+                               alt="vue-api-request"/>
+                          <p>{{example.serialExample.response3}}</p>
                         </api-request>
 
                       </api-request>
+
                     </div>
 
                   </api-request>
@@ -722,6 +719,17 @@
 
         <fieldset id="exp_9">
           <h3>9. Parallel Requests</h3>
+
+          <p>
+            If some content uses data of many of requests, <code>Parallel Requests</code> can save you.
+            By this way, the content only shows when all of set of requests are successfully loaded.
+            Otherwise, it throws an error.
+          </p>
+
+          <p>
+            This example is the same as <code>Serial Requests</code> showed before, but now all responses
+            appear at the same time when all of them load.
+          </p>
 
           <pre v-html="js(code['docs'][8][0])"></pre>
           <pre v-html="html(code['docs'][8][1])"></pre>
@@ -743,45 +751,29 @@
                 :trigger.sync="example.parallelExample.trigger"
                 v-if="example.parallelExample.show"
               >
-                <form slot="waiting" @submit.prevent="example.parallelExample.trigger=true">
-                  <h4>Enter three URL sites</h4>
-
-                  <div class="form-group col-xs-12 col-md-4">
-                    <input class="form-control"
-                           placeholder="Enter an URL site"
-                           v-model="example.parallelExample.q1"/>
-                  </div>
-                  <div class="form-group col-xs-12 col-md-4">
-                    <input class="form-control"
-                           placeholder="Enter an URL site"
-                           v-model="example.parallelExample.q2"/>
-                  </div>
-                  <div class="form-group col-xs-12 col-md-4">
-                    <input class="form-control"
-                           placeholder="Enter an URL site"
-                           v-model="example.parallelExample.q3"/>
-                  </div>
-
-                  <div class="form-group">
-                    <button class="btn btn-default">Generate Print Screen</button>
-                  </div>
+                <form slot="waiting">
+                  <a @click="example.parallelExample.trigger=true"
+                     class="btn btn-default">Do parallel request</a>
                 </form>
 
                 <div slot="success" class="row">
                   <div class="col-md-4">
                     <img src="/static/v-api@512.png"
-                         class="img-responsive"
-                         alt="print"/>
+                         :style="{width: '200px'}"
+                         alt="vue-api-request"/>
+                    <p>{{example.parallelExample.response.request1}}</p>
                   </div>
                   <div class="col-md-4">
                     <img src="/static/v-api@512.png"
-                         class="img-responsive"
-                         alt="print"/>
+                         :style="{width: '200px'}"
+                         alt="vue-api-request"/>
+                    <p>{{example.parallelExample.response.request2}}</p>
                   </div>
                   <div class="col-md-4">
                     <img src="/static/v-api@512.png"
-                         class="img-responsive"
-                         alt="print"/>
+                         :style="{width: '200px'}"
+                         alt="vue-api-request"/>
+                    <p>{{example.parallelExample.response.request3}}</p>
                   </div>
                 </div>
               </api-request>
@@ -821,7 +813,16 @@
                       <option value="rotateInDownRight">rotateInDownRight</option>
                       <option value="rotateInUpLeft">rotateInUpLeft</option>
                       <option value="rotateInUpRight">rotateInUpRight</option>
-                      <option value="jackInTheBox">jackInTheBox</option>
+                      <option value="rollIn">rollIn</option>
+                      <option value="bounce">bounce</option>
+                      <option value="flash">flash</option>
+                      <option value="pulse">pulse</option>
+                      <option value="rubberBand">rubberBand</option>
+                      <option value="shake">shake</option>
+                      <option value="swing">swing</option>
+                      <option value="tada">tada</option>
+                      <option value="wobble">wobble</option>
+                      <option value="jello">jello</option>
                     </select>
                   </div>
 
@@ -906,7 +907,7 @@
             </div>
           </div>
 
-          <h4>Creating your own effect</h4>
+          <h4 id="creating-effect">Creating your own effect</h4>
 
           <p>
             Using <code>addEffect</code> method, it is possible to create a new effect.
@@ -949,16 +950,25 @@
             </div>
           </div>
 
-          <h4>Custom Spinner</h4>
+          <h4 id="creating-loader">Creating your own loader</h4>
 
           <p>
-            Using <code>Loading Slot</code>, you can create use your own loader.
-            The next example uses <a href="//fontawesome.io">Font Awesome</a> as a custom spinner.
+            You may also create your custom loader.
+            There are two ways: using <code>addLoader</code> method or using <code>Loading Slot</code>.
+            The first option is more recommended.
+          </p>
+          <p>
+            The next example uses <code>addLoader</code> method, applying
+            <a href="//fontawesome.io">Font Awesome</a> as a custom spinner.
+            We gonna create a new component called <code>CustomLoader.vue</code>:
           </p>
 
           <div class="row">
             <div class="col-md-8">
               <pre v-html="html(code['docs'][9][2])"></pre>
+              <p>Setting your custom loader: </p>
+              <pre v-html="js(code['docs'][9][3])"></pre>
+              <pre v-html="html(code['docs'][9][4])"></pre>
             </div>
 
             <div class="col-md-4">
@@ -967,7 +977,7 @@
 
                 <div class="panel-heading">
                   <div class="pull-right">
-                    <a @click="reset('customSpinnerExample')" class="btn btn-primary">Show Spinner</a>
+                    <a @click="reset('customSpinnerExample')" class="btn btn-primary">Show Loader</a>
                   </div>
                   <h4>Example</h4>
                 </div>
@@ -976,12 +986,9 @@
 
                   <api-request
                     :resource="$api.fakeRequest(2500)"
+                    spinner="CustomLoader"
                     v-if="example.customSpinnerExample.show"
                   >
-                    <div slot="loading">
-                      <i class="fa fa-refresh fa-spin"></i>
-                      Loading
-                    </div>
                     <img src="../assets/v-api@512.png"
                          :style="{maxHeight: '200px', width: 'auto'}"
                          alt="Vue Api Request"/>
@@ -1169,7 +1176,16 @@
                     <code>rotateInDownRight</code>,
                     <code>rotateInUpLeft</code>,
                     <code>rotateInUpRight</code>,
-                    <code>jackInTheBox</code>
+                    <code>rollIn</code>,
+                    <code>bounce</code>,
+                    <code>flash</code>,
+                    <code>pulse</code>,
+                    <code>rubberBand</code>,
+                    <code>shake</code>,
+                    <code>swing</code>,
+                    <code>tada</code>,
+                    <code>wobble</code>,
+                    <code>jello</code>
                   </p>
                 </td>
               </tr>
@@ -1368,11 +1384,13 @@
                 <td><code>default</code></td>
                 <td>
                   <p>
-                    If there is no other slot set, it corresponds the <code>success slot</code>.
+                    If there is no <code>success slot</code> or <code>waiting slot</code>,
+                    it corresponds the <code>success slot</code>.
                     Otherwise, it is disabled.
                   </p>
 
                   <pre v-html="html(code['apiReference']['slots']['default'][0])"></pre>
+                  <pre v-html="html(code['apiReference']['slots']['default'][1])"></pre>
 
                 </td>
               </tr>
@@ -1407,7 +1425,8 @@
                 <td><code>loading</code></td>
                 <td>
                   <p>
-                    Replaces the standard loader and shows your custom loader
+                    Replaces the standard loader and shows your custom loader.
+                    See also <a @click="scrollTo('#conf-methods')">addLoader</a> method.
                   </p>
                 </td>
               </tr>
@@ -1522,7 +1541,24 @@
                     </li>
                     <li>
                       <code>effect</code>: Function that makes the the effect.
-                      See <a @click="scrollTo('#exp_11')">this example</a>.
+                      See <a @click="scrollTo('#creating-effect')">this example</a>.
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <td><code>addLoader</code></td>
+                <td><span class="grey">String</span> name, <span class="grey">Component</span> component</td>
+                <td>
+                  Add a custom loader.
+                  <h5>Params</h5>
+                  <ul>
+                    <li>
+                      <code>name</code>: Name of loader. It will replace if it already exists.
+                    </li>
+                    <li>
+                      <code>component</code>: Component that will be used as loader.
+                      See <a @click="scrollTo('#creating-loader')">this example</a>.
                     </li>
                   </ul>
                 </td>
@@ -1691,7 +1727,7 @@
     },
 
     data () {
-      return { code, example }
+      return {code, example}
     },
 
     methods: {

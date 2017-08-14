@@ -25,5 +25,8 @@ export default {
       limit: params.limit,
       offset: params.offset
     }
+  }),
+  hipolabsUni: (query) => Vue.http.get(`//universities.hipolabs.com`, {
+    params: { query }
   })
 }

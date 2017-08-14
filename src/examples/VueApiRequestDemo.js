@@ -46,24 +46,18 @@ let serialExample = {
   response1: {},
   response2: {},
   response3: {},
-  trigger: false,
-  q1: 'http://google.com',
-  q2: 'http://facebook.com',
-  q3: 'http://twitter.com'
+  trigger: false
 }
 
 let parallelExample = {
   show: true,
   resource: (api) => ({
-    request1: api.fakeRequest(1000),
-    request2: api.fakeRequest(2000),
-    request3: api.fakeRequest(3000)
+    request1: api.fakeRequest(1000, 'First Response'),
+    request2: api.fakeRequest(2000, 'Second Response'),
+    request3: api.fakeRequest(3000, 'Third Response')
   }),
   response: {},
-  trigger: false,
-  q1: 'http://google.com',
-  q2: 'http://facebook.com',
-  q3: 'http://twitter.com'
+  trigger: false
 }
 
 let customizeExample = {
