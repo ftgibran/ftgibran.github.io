@@ -172,7 +172,7 @@ Vue.use(VueApiRequest)
   export default {
     data () {
       return {
-        trigger: false,
+        trigger: false, //trigger always starts with false value
         liked: false
       }
     }
@@ -191,43 +191,38 @@ Vue.use(VueApiRequest)
 }
 `,
     `<template>
-  <div>
-    <api-request
-      :resource="$api.giphySearch"
-      :params="{q, offset, limit: 3}"
-      v-model="response"
-      :trigger.sync="trigger"
-      :sync="offset"
-    >
+  <api-request
+    :resource="$api.giphySearch"
+    :params="{q, offset, limit: 3}"
+    v-model="response"
+    :trigger.sync="trigger"
+    :sync="offset"
+  >
+  
+    <form slot="waiting" @submit.prevent="trigger=true">
+      <input type="text" placeholder="Type something" v-model="q"/>
+      <button>Search</button>
+    </form>
     
-      <form slot="waiting" @submit.prevent="trigger=true">
-        <input type="text" placeholder="Type something" v-model="q"/>
-        <button>Search</button>
-      </form>
-      
-      <div slot="success">
-        <div v-if="response">
-          <div v-for="item in response.body.data">
-            <img :src="item.images.fixed_width.url"/>
-          </div>
-        </div>
+    <div slot="success">
+      <div v-for="item in response.body.data">
+        <img :src="item.images.fixed_width.url"/>
       </div>
       
-    </api-request>
-
-    <div v-if="response">
-      <span>
-        <button @click="offset -= offset == 0 ? 0:3">Previous</button>
-      </span>
-      <span>
-        {{offset / 3 + 1}}
-      </span>
-      <span>
-        <button @click="offset += 3">Next</button>
-      </span>
+      <div>
+        <span>
+          <button @click="offset -= offset == 0 ? 0:3">Previous</button>
+        </span>
+        <span>
+          {{offset / 3 + 1}}
+        </span>
+        <span>
+          <button @click="offset += 3">Next</button>
+        </span>
+      </div>
     </div>
     
-  </div>
+  </api-request>
 </template>
 
 <script>
@@ -238,7 +233,9 @@ Vue.use(VueApiRequest)
         trigger: false,
         q: null,
         offset: 0,
-        response: null
+        response: {
+          body: {}
+        }
       }
     }
   }

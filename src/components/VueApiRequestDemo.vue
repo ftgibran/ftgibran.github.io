@@ -319,16 +319,20 @@
           <h3>5. Trigger & Sync Requests using Waiting Slot</h3>
 
           <p>
-            The <code>waiting slot</code> is very useful.
-            It keeps component in waiting state, holding the request.
-            So, you can call your API whenever you want by using <code>sync</code>, <code>trigger</code> or <code>fetch method</code>.
+            The <code>Waiting Slot</code> is very useful.
+            It keeps component in a standby state, holding the call.
+            So, you are allowed to call your API whenever you want by using <code>sync</code>, <code>trigger</code> or <code>fetch method</code>.
           </p>
 
           <p>
-            By default, if you don't have any slot set, the <code>default slot</code> is <code>success slot</code>
-            and the component will never hold the request.
-            However, if there is only <code>waiting</code> set, the component will come back to waiting after loading.
-            This is useful for some situations like <strong>toggle requests</strong>.
+            By default, if you don't have <code>Waiting Slot</code> or <code>Success Slot</code> set,
+            the <code>Default Slot</code> will be <code>Success Slot</code>
+            and the component will not hold the API call (the call happens when the component is mounted).
+          </p>
+
+          <p>
+            Other case, if there is only <code>Waiting Slot</code> set, the component will come back to this slot after the request is done (loaded).
+            This is can be useful for some situations like <strong>toggle requests</strong> (e.g. Like Button).
           </p>
 
           <h4>Example with trigger.sync</h4>
@@ -453,6 +457,10 @@
 
                     </div>
 
+                  </div>
+
+                  <div slot="error">
+                    Error loading this page!
                   </div>
                 </api-request>
 
