@@ -8,20 +8,27 @@ import { TweenLite, Power2 } from 'gsap'
 import 'font-awesome/css/font-awesome.css'
 import CustomLoader from './components/CustomLoader.vue'
 
-import VueHead from 'vue-head'
+import VueAnalytics from 'vue-analytics'
 import VueApiRequest from 'vue-api-request'
+import VueHead from 'vue-head'
 
+if (process.env.NODE_ENV === 'production') {
+  Vue.use(VueAnalytics, {
+    id: 'UA-75058768-2',
+    router: AppRouter,
+    autoTracking: {
+      exception: true
+    }
+  })
+}
 Vue.use(VueHead)
 
 VueApiRequest.setAPI(AppResource)
-
 VueApiRequest.addLoader('CustomLoader', CustomLoader)
-
 VueApiRequest.addEffect('blur', el => {
   el.style.filter = 'blur(20px)'
   TweenLite.to(el, 1, {filter: 'blur(0)', ease: Power2.easeOut})
 })
-
 Vue.use(VueApiRequest)
 
 Vue.config.productionTip = false
@@ -31,5 +38,5 @@ new Vue({
   el: '#app',
   router: AppRouter,
   template: '<App/>',
-  components: { App }
+  components: {App}
 })

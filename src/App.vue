@@ -5,8 +5,12 @@
 </template>
 
 <script>
+  import {version} from '../package.json'
   export default {
-    name: 'app'
+    name: 'App',
+    created () {
+      console.info(`v${version}`)
+    }
   }
 </script>
 
