@@ -117,10 +117,31 @@
           <h3>Installation</h3>
 
           <p>
-            Package is installable via npm.
+            Package is installable via <code>NPM</code>.
           </p>
 
-          <pre>$ npm i vue-api-request --save</pre>
+          <pre v-html="code['installation'][0]"></pre>
+
+          <p>
+            <strong>or</strong>
+          </p>
+
+          <p>
+            Package is installable via <code>Yarn</code>.
+          </p>
+
+          <pre v-html="code['installation'][1]"></pre>
+
+          <p>
+            <strong>or</strong>
+          </p>
+
+          <p>
+            Package is installable via <code>CDN</code>.
+          </p>
+
+          <pre v-html="html(code['installation'][2])"></pre>
+
         </fieldset>
 
         <fieldset id="basic-usage">
