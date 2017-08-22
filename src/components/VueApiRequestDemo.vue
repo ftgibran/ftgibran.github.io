@@ -142,6 +142,10 @@
 
           <pre v-html="html(code['installation'][2])"></pre>
 
+          <p>
+            <a href="https://jsfiddle.net/gibranmax/everjv20/" target="_blank">See example in JSFiddle</a>
+          </p>
+
         </fieldset>
 
         <fieldset id="basic-usage">

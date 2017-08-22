@@ -23,7 +23,7 @@ export default [
     },
     methods: {
       giphyRandom () {
-        return Vue.http.get('http://api.giphy.com/v1/gifs/random', {
+        return Vue.http.get('//api.giphy.com/v1/gifs/random', {
           params: {
             api_key: 'ceea3d73eee446f48e2a645e117b1f31'
           }
@@ -37,7 +37,7 @@ export default [
   /** Request with Params ***********************************************/
   [
     `giphyRandom (tag) {
-  return Vue.http.get('http://api.giphy.com/v1/gifs/random', {
+  return Vue.http.get('//api.giphy.com/v1/gifs/random', {
     params: {
       api_key: 'ceea3d73eee446f48e2a645e117b1f31',
       tag
@@ -50,7 +50,7 @@ export default [
 </api-request>
 `,
     `giphyRandom (params) {
-  return Vue.http.get('http://api.giphy.com/v1/gifs/random', {
+  return Vue.http.get('//api.giphy.com/v1/gifs/random', {
     params: {
       api_key: 'ceea3d73eee446f48e2a645e117b1f31',
       tag: params.tag
@@ -180,7 +180,7 @@ Vue.use(VueApiRequest)
 </script>
 `,
     `$api = {
-  giphySearch: (params) => Vue.http.get('http://api.giphy.com/v1/gifs/search', {
+  giphySearch: (params) => Vue.http.get('//api.giphy.com/v1/gifs/search', {
     params: {
       api_key: 'ceea3d73eee446f48e2a645e117b1f31',
       q: params.q,
