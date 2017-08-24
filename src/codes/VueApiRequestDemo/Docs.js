@@ -49,7 +49,7 @@ export default [
   <img v-if="myResponse" :src="myResponse.body.data.image_url"/>
 </api-request>
 `,
-    `giphyRandom (params) {
+    `giphyRandom (params = {}) {
   return Vue.http.get('//api.giphy.com/v1/gifs/random', {
     params: {
       api_key: 'ceea3d73eee446f48e2a645e117b1f31',
@@ -143,7 +143,7 @@ Vue.use(VueApiRequest)
   /** Trigger & Sync Requests using Waiting Slot ***********************************************/
   [
     `$api = {
-  fakeRequest: (params) => new Promise(resolve => {
+  fakeRequest: (params = {}) => new Promise(resolve => {
     setTimeout(() => resolve(params.response), params.time)
   })
 }
@@ -180,7 +180,7 @@ Vue.use(VueApiRequest)
 </script>
 `,
     `$api = {
-  giphySearch: (params) => Vue.http.get('//api.giphy.com/v1/gifs/search', {
+  giphySearch: (params = {}) => Vue.http.get('//api.giphy.com/v1/gifs/search', {
     params: {
       api_key: 'ceea3d73eee446f48e2a645e117b1f31',
       q: params.q,
@@ -240,6 +240,12 @@ Vue.use(VueApiRequest)
     }
   }
 </script>
+`,
+    `computed: {
+  foobar () {
+    return [foo, bar]
+  }
+}
 `
   ],
   /** Conditional Request ***********************************************/
@@ -320,9 +326,7 @@ Vue.use(VueApiRequest)
       @success="successEvent"
     >
       <div slot="waiting">
-        <a @click="example.eventsExample.triggerSuccess=true"
-           class="btn btn-default"
-        >Success Example</a>
+        <button @click="triggerSuccess=true">Success Example</button>
       </div>
       <div slot="success">Success</div>
     </api-request>
@@ -389,7 +393,7 @@ Vue.use(VueApiRequest)
   /** Serial Request ***********************************************/
   [
     `$api = {
-  fakeRequest: (params) => new Promise(resolve => {
+  fakeRequest: (params = {}) => new Promise(resolve => {
     setTimeout(() => resolve(params.response), params.time)
   })
 }
@@ -453,7 +457,7 @@ Vue.use(VueApiRequest)
   /** Parallel Request ***********************************************/
   [
     `$api = {
-  fakeRequest: (params) => new Promise(resolve => {
+  fakeRequest: (params = {}) => new Promise(resolve => {
     setTimeout(() => resolve(params.response), params.time)
   })
 }

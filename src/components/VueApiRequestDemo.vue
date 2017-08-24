@@ -117,7 +117,7 @@
           <h3>Installation</h3>
 
           <p>
-            Package is installable via <code>NPM</code>.
+            Package is installable via <strong>NPM</strong>
           </p>
 
           <pre v-html="code['installation'][0]"></pre>
@@ -127,7 +127,7 @@
           </p>
 
           <p>
-            Package is installable via <code>Yarn</code>.
+            via <strong>Yarn</strong>
           </p>
 
           <pre v-html="code['installation'][1]"></pre>
@@ -137,10 +137,14 @@
           </p>
 
           <p>
-            Package is installable via <code>CDN</code>.
+            via <strong>CDN</strong>
           </p>
 
           <pre v-html="html(code['installation'][2])"></pre>
+
+          <p>
+            It will set <code>window.VueApiRequest</code> as the module.
+          </p>
 
           <p>
             <a href="https://jsfiddle.net/gibranmax/everjv20/" target="_blank">See example in JSFiddle</a>
@@ -262,7 +266,7 @@
           <div class="alert alert-warning">
             <h4>Never do this, ever!</h4>
             <p>
-              Normally, if you need params, you call the function with it: <code>func(a, b)</code>. However, using this concept
+              Normally, if you need params, you call the function like: <code>func(a, b)</code>. However, using this concept
               in <code>:resource="giphyRandom('food', 'g')"</code>, the component will not work properly.
             </p>
             <p>
@@ -507,6 +511,21 @@
 
             </div>
           </div>
+
+          <div class="alert alert-info">
+            <h4>Multi variables in Sync</h4>
+            <p>
+              For an unknown reason, you can't simply sync multi variables like this: <code>:sync="[foo, bar]"</code>.
+              It causes a weird bug which treats sync parameter as reactive with input event.
+            </p>
+            <p>
+              A good solution is to use computed variable in sync parameter.
+              The example below you can use <code>:sync="foobar"</code>:
+            </p>
+            <br/>
+            <pre v-html="js(code['docs'][4][4])"></pre>
+          </div>
+
 
         </fieldset>
 
