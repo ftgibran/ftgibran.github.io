@@ -1,10 +1,15 @@
 <template>
-  <div class="cross-domain-callback text-left">
-    <h3>Origem: </h3>
-    <pre>{{origin}}</pre>
+  <div class="cross-domain-callback">
+    <div class="container text-left">
+      <h4>Local do iFrame: </h4>
+      <pre>{{local}}</pre>
 
-    <h3>Dados recebidos: </h3>
-    <pre>{{data}}</pre>
+      <h4>Origem dos dados: </h4>
+      <pre>{{origin}}</pre>
+
+      <h4>Dados recebidos: </h4>
+      <pre>{{data}}</pre>
+    </div>
   </div>
 </template>
 
@@ -12,11 +17,13 @@
   export default {
     data () {
       return {
+        local: null,
         origin: null,
         data: null
       }
     },
     mounted () {
+      this.local = document.location.origin
       window.onmessage = e => {
         if (e.origin !== document.location.origin) {
           this.origin = e.origin
